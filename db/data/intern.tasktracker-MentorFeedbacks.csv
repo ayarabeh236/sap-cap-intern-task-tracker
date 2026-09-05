@@ -1,0 +1,6 @@
+ID,rating,recommendations,task_ID
+11111111-aaaa-bbbb-cccc-111111111111,4,Good technical progress. Improve code documentation.,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1
+22222222-aaaa-bbbb-cccc-222222222222,4,Good start. Pay attention to Fiori annotations and usability.,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2
+33333333-aaaa-bbbb-cccc-333333333333,5,Well structured CDS model and clear entity relationships.,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
+44444444-aaaa-bbbb-cccc-444444444444,3,Service implementation is progressing but requires more testing.,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2
+55555555-aaaa-bbbb-cccc-555555555555,3,Investigate the BTP access blocker and document the resolution steps.,cccccccc-cccc-cccc-cccc-ccccccccccc1

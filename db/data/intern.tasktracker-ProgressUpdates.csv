@@ -1,0 +1,8 @@
+ID,progress,blocker,comments,task_ID
+dddddddd-dddd-dddd-dddd-ddddddddddd1,30,false,Initial backend structure created,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1
+dddddddd-dddd-dddd-dddd-ddddddddddd2,65,false,Main entities and associations completed,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1
+dddddddd-dddd-dddd-dddd-ddddddddddd3,20,false,Initial Fiori project preparation started,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2
+eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1,100,false,CDS model completed and validated,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1
+eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee2,50,false,Service definition is in progress,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2
+ffffffff-ffff-ffff-ffff-fffffffffff1,25,true,Waiting for BTP access configuration,cccccccc-cccc-cccc-cccc-ccccccccccc1
+ffffffff-ffff-ffff-ffff-fffffffffff2,10,false,Deployment checklist started,cccccccc-cccc-cccc-cccc-ccccccccccc2
