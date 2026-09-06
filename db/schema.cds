@@ -19,6 +19,7 @@ type TaskStatus : String(30) enum {
 entity Interns : cuid, managed {
     firstName   : String(80);
     lastName    : String(80);
+    fullName    : String(161) = firstName || ' ' || lastName;
     email       : String(120);
     department  : String(100);
 

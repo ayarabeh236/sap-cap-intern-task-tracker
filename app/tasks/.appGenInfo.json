@@ -1,0 +1,32 @@
+{
+  "generationParameters": {
+    "generationDate": "Sun Sep 06 2026 13:35:25 GMT+0100 (GMT+01:00)",
+    "generatorPlatform": "Visual Studio Code",
+    "serviceType": "Local CAP",
+    "metadataFilename": "",
+    "serviceUrl": "http://localhost:4004/odata/v4/internship/",
+    "appName": "tasks",
+    "appTitle": "Intern Task Tracker",
+    "appDescription": "SAP Fiori Elements application for managing intern tasks, progress updates, and mentor feedback.",
+    "appNamespace": "intern.tasktracker",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.152.0",
+    "enableEslint": true,
+    "enableTypeScript": false,
+    "showMockDataInfo": false,
+    "generatorVersion": "1.32.0",
+    "template": "List Report Page V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [
+      {
+        "type": "Main Entity",
+        "value": "Tasks"
+      },
+      {
+        "type": "Navigation Entity",
+        "value": "None"
+      }
+    ],
+    "launchText": "To launch the generated app, start your CAP project:  and navigate to the following location in your browser:\n\nhttp://localhost:4004/tasks/webapp/index.html"
+  }
+}
