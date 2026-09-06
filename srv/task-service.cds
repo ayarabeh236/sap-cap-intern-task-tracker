@@ -4,10 +4,22 @@ service InternshipService {
 
     entity Interns
         as projection on db.Interns;
+    
 
-    entity Tasks
-        as projection on db.Tasks;
+   @odata.draft.enabled
+   entity Tasks
+     as projection on db.Tasks
+     actions {
+         @(
+             cds.odata.bindingparameter.name: '_it',
+             Common.SideEffects: {
+                TargetProperties: ['_it/status']
+             }
+         )
+         action completeTask();
+     };
 
+    
     entity ProgressUpdates
         as projection on db.ProgressUpdates;
 
