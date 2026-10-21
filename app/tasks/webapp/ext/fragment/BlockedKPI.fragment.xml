@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+        id="blockedKPI"
+        text="Blocked"
+        number="{path: '/MentorDashboardKPIs/blockedTasks'}"
+        status="Error"
+        showIcon="false"
+    />
+
+</core:FragmentDefinition>

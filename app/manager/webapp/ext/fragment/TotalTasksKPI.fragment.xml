@@ -1,0 +1,13 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+       id="totalTasksKPI"
+       text="Total Tasks"
+       number="{path: '/DashboardKPIs/totalTasks'}"
+       showIcon="false"
+    />
+
+</core:FragmentDefinition>

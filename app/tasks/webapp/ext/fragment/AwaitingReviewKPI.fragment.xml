@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+        id="awaitingReviewKPI"
+        text="Awaiting Review"
+        number="{path: '/MentorDashboardKPIs/awaitingReviewTasks'}"
+        status="Warning"
+        showIcon="false"
+    />
+
+</core:FragmentDefinition>

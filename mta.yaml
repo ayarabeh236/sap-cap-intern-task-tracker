@@ -1,0 +1,188 @@
+_schema-version: 3.3.0
+ID: intern-task-tracker
+version: 1.0.0
+description: "Intern Task Tracker - SAP CAP application"
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: intern-task-tracker-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: intern-task-tracker-auth
+      - name: intern-task-tracker-db
+      - name: intern-task-tracker-destination
+
+  - name: intern-task-tracker-app-deployer
+    type: com.sap.application.content
+    path: gen
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: interntasktrackermanager
+          artifacts:
+            - manager.zip
+          target-path: app/
+        - name: interntasktrackermytasks
+          artifacts:
+            - mytasks.zip
+          target-path: app/
+        - name: interntasktrackertasks
+          artifacts:
+            - tasks.zip
+          target-path: app/
+    requires:
+      - name: intern-task-tracker-auth
+      - name: srv-api
+      - name: intern-task-tracker-html5-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+    parameters:
+      config:
+        destinations:
+          - Name: srv-api
+            URL: ~{srv-api/srv-url}
+            Authentication: NoAuthentication
+            Type: HTTP
+            ProxyType: Internet
+            ForwardAuthToken: true
+            DynamicDestination: true
+
+  - name: interntasktrackermanager
+    type: html5
+    path: app/manager
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms: []
+  - name: interntasktrackermytasks
+    type: html5
+    path: app/mytasks
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms: []
+  - name: interntasktrackertasks
+    type: html5
+    path: app/tasks
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms: []
+
+  - name: intern-task-tracker-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: intern-task-tracker-db
+
+  - name: intern-task-tracker-destinations
+    type: com.sap.application.content
+    requires:
+      - name: intern-task-tracker-auth
+        parameters:
+          service-key:
+            name: intern-task-tracker-auth-key
+      - name: intern-task-tracker-html5-repo-host
+        parameters:
+          service-key:
+            name: intern-task-tracker-html5-repo-host-key
+      - name: srv-api
+      - name: intern-task-tracker-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: intern-task-tracker-html5-repository
+              ServiceInstanceName: intern-task-tracker-html5-repo-host
+              ServiceKeyName: intern-task-tracker-html5-repo-host-key
+              sap.cloud.service: interntasktracker.service
+            - Name: intern-task-tracker-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: intern-task-tracker-auth
+              ServiceKeyName: intern-task-tracker-auth-key
+              sap.cloud.service: interntasktracker.service
+
+resources:
+  - name: intern-task-tracker-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: intern-task-tracker-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+
+        role-collections:
+          - name: "Intern (intern-task-tracker ${org}-${space})"
+            description: "generated"
+            role-template-references:
+              - "$XSAPPNAME.Intern"
+          - name: "Manager (intern-task-tracker ${org}-${space})"
+            description: "generated"
+            role-template-references:
+              - "$XSAPPNAME.Manager"
+          - name: "Mentor (intern-task-tracker ${org}-${space})"
+            description: "generated"
+            role-template-references:
+              - "$XSAPPNAME.Mentor"
+
+  - name: intern-task-tracker-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+
+  - name: intern-task-tracker-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: intern-task-tracker-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+    requires:
+      - name: srv-api

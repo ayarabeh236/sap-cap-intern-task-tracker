@@ -3,21 +3,85 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "@sap/cds": "^10"
+    "@cap-js/hana": "^3",
+    "@google/genai": "^2.29.1",
+    "@sap/cds": "^10",
+    "@sap/xssec": "^4"
   },
   "devDependencies": {
+    "@cap-js/cds-test": "^1.0.2",
     "@cap-js/sqlite": "^3",
-    "cds-plugin-ui5": "^0.17.0"
+    "@sap/cds-dk": "^10",
+    "cds-plugin-ui5": "^0.17.0",
+    "cross-env": "^10.1.0"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-tasks": "cds watch --open intern.tasktracker.tasks/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "test": "cross-env CDS_ENV=test CDS_PLUGIN_UI5_LAZY_LOADING=true cds test --workers 1",
+    "watch-tasks": "cds watch --open intern.tasktracker.tasks/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-mytasks": "cds watch --open intern.tasktracker.mytasks/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-manager": "cds watch --open intern.tasktracker.manager/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/tasks"
-  ]
+    "app/tasks",
+    "app/mytasks",
+    "app/manager"
+  ],
+  "cds": {
+    "requires": {
+      "db": {
+        "[development]": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": "db.sqlite"
+          }
+        },
+        "[test]": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": ":memory:"
+          }
+        },
+        "[production]": {
+          "kind": "hana"
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "intern": {
+            "password": "intern",
+            "roles": [
+              "Intern"
+            ]
+          },
+          "mentor": {
+            "password": "mentor",
+            "roles": [
+              "Mentor"
+            ]
+          },
+          "manager": {
+            "password": "manager",
+            "roles": [
+              "Manager"
+            ]
+          },
+          "*": false
+        }
+      },
+      "[production]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      },
+      "html5-repo": true,
+      "destinations": true,
+      "workzone": true
+    }
+  }
 }

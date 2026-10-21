@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+        id="overdueKPI"
+        text="Overdue"
+        number="{path: '/DashboardKPIs/overdueTasks'}"
+        status="Warning"
+        showIcon="false"
+    />
+
+</core:FragmentDefinition>

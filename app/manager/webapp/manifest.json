@@ -1,0 +1,219 @@
+{
+  "_version": "1.89.0",
+  "sap.app": {
+    "id": "intern.tasktracker.manager",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.33.0",
+      "toolsId": "a4f9f64d-e05a-4a95-865a-394b34a1d6f8"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/manager/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "managerDashboard-display": {
+          "semanticObject": "ManagerDashboard",
+          "action": "display",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.153.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "intern.tasktracker.manager.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "TasksList",
+          "target": "TasksList"
+        },
+        {
+          "pattern": "Tasks({key}):?query:",
+          "name": "TasksObjectPage",
+          "target": "TasksObjectPage"
+        },
+        {
+          "pattern": "DashboardKPIsByIntern:?query:",
+          "name": "InternPerformance",
+          "target": "InternPerformance"
+        }
+      ],
+      "targets": {
+        "TasksList": {
+          "type": "Component",
+          "id": "TasksList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "content": {
+                "header": {
+                  "actions": {
+                    "InternPerformance": {
+                      "text": "Intern Performance",
+                      "press": "intern.tasktracker.manager.ext.controller.TasksList.onInternPerformance"
+                    }
+                  }
+                }
+              },
+              "contextPath": "/Tasks",
+              "variantManagement": "Page",
+              "keyPerformanceIndicators": {
+                "totalTasks": {
+                  "template": "intern.tasktracker.manager.ext.fragment.TotalTasksKPI"
+                },
+                "inProgress": {
+                  "template": "intern.tasktracker.manager.ext.fragment.InProgressKPI"
+                },
+                "awaitingReview": {
+                  "template": "intern.tasktracker.manager.ext.fragment.AwaitingReviewKPI"
+                },
+                "blocked": {
+                  "template": "intern.tasktracker.manager.ext.fragment.BlockedKPI"
+                },
+                "overdue": {
+                  "template": "intern.tasktracker.manager.ext.fragment.OverdueKPI"
+                },
+                "completed": {
+                  "template": "intern.tasktracker.manager.ext.fragment.CompletedKPI"
+                },
+                "completionRate": {
+                  "template": "intern.tasktracker.manager.ext.fragment.CompletionRateKPI"
+                }
+              },
+              "navigation": {
+                "Tasks": {
+                  "detail": {
+                    "route": "TasksObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "TasksObjectPage": {
+          "type": "Component",
+          "id": "TasksObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Tasks"
+            }
+          }
+        },
+        "InternPerformance": {
+          "type": "Component",
+          "id": "InternPerformance",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/DashboardKPIsByIntern",
+              "variantManagement": "Page",
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {
+      "enableLazyLoading": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "interntasktracker.service"
+  }
+}
+

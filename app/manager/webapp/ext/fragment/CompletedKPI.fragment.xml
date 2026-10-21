@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+        id="completedKPI"
+        text="Completed"
+        number="{path: '/DashboardKPIs/completedTasks'}"
+        status="Success"
+        showIcon="false"
+    />
+
+</core:FragmentDefinition>

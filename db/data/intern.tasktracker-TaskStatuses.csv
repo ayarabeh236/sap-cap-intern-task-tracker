@@ -1,0 +1,7 @@
+code,label
+OPEN,Open
+IN_PROGRESS,In Progress
+BLOCKED,Blocked
+AWAITING_REVIEW,Awaiting Review
+COMPLETED,Completed
+CANCELLED,Cancelled

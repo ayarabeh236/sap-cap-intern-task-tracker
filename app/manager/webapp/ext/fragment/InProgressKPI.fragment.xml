@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+       id="inProgressKPI"
+       text="In Progress"
+       number="{path: '/DashboardKPIs/inProgressTasks'}"
+       status="Information"
+       showIcon="false"
+    />
+
+</core:FragmentDefinition>

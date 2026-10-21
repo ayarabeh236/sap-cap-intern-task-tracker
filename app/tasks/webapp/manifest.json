@@ -24,6 +24,18 @@
           "odataVersion": "4.0"
         }
       }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "mentorTasks-display": {
+          "semanticObject": "MentorTasks",
+          "action": "display",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
     }
   },
   "sap.ui": {
@@ -92,6 +104,11 @@
           "pattern": "Tasks({key}):?query:",
           "name": "TasksObjectPage",
           "target": "TasksObjectPage"
+        },
+        {
+          "pattern": "MentorInternPerformance:?query:",
+          "name": "MentorInternPerformance",
+          "target": "MentorInternPerformance"
         }
       ],
       "targets": {
@@ -101,8 +118,44 @@
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
+              "content": {
+                "header": {
+                  "actions": {
+                    "MentorInternPerformance": {
+                      "text": "Intern Performance",
+                      "press": "intern.tasktracker.tasks.ext.controller.TasksList.onInternPerformance"
+                    }
+                  }
+                }
+              },
               "contextPath": "/Tasks",
               "variantManagement": "Page",
+              "keyPerformanceIndicators": {
+                "assignedInterns": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.AssignedInternsKPI"
+                },
+                "totalTasks": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.TotalTasksKPI"
+                },
+                "inProgress": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.InProgressKPI"
+                },
+                "awaitingReview": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.AwaitingReviewKPI"
+                },
+                "blocked": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.BlockedKPI"
+                },
+                "overdue": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.OverdueKPI"
+                },
+                "completed": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.CompletedKPI"
+                },
+                "completionRate": {
+                  "template": "intern.tasktracker.tasks.ext.fragment.CompletionRateKPI"
+                }
+              },
               "navigation": {
                 "Tasks": {
                   "detail": {
@@ -130,6 +183,31 @@
               "contextPath": "/Tasks"
             }
           }
+        },
+        "MentorInternPerformance": {
+          "type": "Component",
+          "id": "MentorInternPerformance",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/MentorInternPerformance",
+              "variantManagement": "Page",
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  },
+                  "actions": {
+                    "GenerateWeeklySummary": {
+                      "text": "Generate Weekly Summary",
+                      "press": "intern.tasktracker.tasks.ext.controller.MentorInternPerformance.onGenerateWeeklySummary",
+                      "requiresSelection": true
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -142,5 +220,10 @@
     "app": {
       "enableLazyLoading": true
     }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "interntasktracker.service"
   }
 }
+

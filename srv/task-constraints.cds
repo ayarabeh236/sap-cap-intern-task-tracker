@@ -1,5 +1,6 @@
-using { InternshipService } from './task-service';
+using { InternService } from './intern-service';
 
-annotate InternshipService.ProgressUpdates with {
-    progress @assert.range: [0, 100];
+annotate InternService.MyProgressUpdates with {
+    progress @mandatory
+             @assert.range: [0, 100];
 };

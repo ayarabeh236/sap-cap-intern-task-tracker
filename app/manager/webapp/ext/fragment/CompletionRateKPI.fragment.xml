@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:macros="sap.fe.macros">
+
+    <macros:KPITag
+        id="completionRateKPI"
+        text="Completion Rate"
+        number="{path: '/DashboardKPIs/completionRate'}"
+        unit="%"
+        status="Success"
+        showIcon="false"
+    />
+
+</core:FragmentDefinition>

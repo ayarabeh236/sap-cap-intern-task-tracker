@@ -20,7 +20,20 @@ annotate service.Tasks with @(
         {
             $Type: 'UI.DataField',
             Value: status,
-            Label: 'Status'
+            Label: 'Status',
+            Criticality: (
+                status = 'COMPLETED'
+                    ? 3
+                    : (
+                        status = 'AWAITING_REVIEW'
+                            ? 2
+                            : (
+                                status = 'BLOCKED' OR status = 'CANCELLED'
+                                    ? 1
+                                    : 0
+                            )
+                    )
+            )
         },
         {
             $Type: 'UI.DataField',
@@ -43,6 +56,19 @@ annotate service.Tasks with @(
             Value: intern.fullName
         }
     },
+
+    UI.Identification: [
+        {
+            $Type: 'UI.DataFieldForAction',
+            Action: 'InternshipService.completeTask',
+            Label: 'Complete Task'
+        },
+        {
+            $Type: 'UI.DataFieldForAction',
+            Action: 'InternshipService.requestChanges',
+            Label: 'Request Changes'
+        }
+    ],
 
     UI.FieldGroup #GeneralInformation: {
         Data: [
@@ -69,7 +95,20 @@ annotate service.Tasks with @(
             {
                 $Type: 'UI.DataField',
                 Value: status,
-                Label: 'Status'
+                Label: 'Status',
+                Criticality: (
+                status = 'COMPLETED'
+                    ? 3
+                    : (
+                        status = 'AWAITING_REVIEW'
+                            ? 2
+                            : (
+                                status = 'BLOCKED' OR status = 'CANCELLED'
+                                    ? 1
+                                    : 0
+                            )
+                    )
+            )
             },
             {
                 $Type: 'UI.DataField',
@@ -98,7 +137,14 @@ annotate service.Tasks with @(
             Label: 'Mentor Feedback',
             Target: 'feedbacks/@UI.LineItem'
         }
-    ]
+
+
+        
+    ],
+
+    UI.UpdateHidden: (
+        status = 'COMPLETED' OR status = 'CANCELLED'
+    )
 );
 
 annotate service.ProgressUpdates with @(
@@ -133,6 +179,8 @@ annotate service.MentorFeedbacks with @(
             Value: rating,
             Label: 'Rating'
         },
+
+        
         {
             $Type: 'UI.DataField',
             Value: recommendations,
@@ -143,6 +191,7 @@ annotate service.MentorFeedbacks with @(
             Value: createdAt,
             Label: 'Created At'
         }
+
     ]
 );
 
@@ -183,11 +232,7 @@ annotate service.Tasks with @(
     ]
 );
 
-annotate service.Tasks with {
-    status    @Common.Label: 'Status';
-    priority  @Common.Label: 'Priority';
-    
-};
+
 
 annotate service.Tasks:intern.ID with @title: 'Intern';
 
@@ -201,12 +246,149 @@ annotate service.Interns:ID with @(
     Common.Text.@UI.TextArrangement: #TextOnly
 );
 
-annotate service.Tasks with @(
-    UI.Identification: [
+
+annotate service.Tasks with {
+
+    status @(
+        Common.Label: 'Status',
+        Common.Text: statusValue.label,
+        Common.Text.@UI.TextArrangement: #TextOnly,
+
+        Common.ValueListWithFixedValues: true,
+
+        Common.ValueList: {
+            Label: 'Status',
+            CollectionPath: 'TaskStatuses',
+
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: status,
+                    ValueListProperty: 'code'
+                },
+                {
+                    $Type: 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'label'
+                }
+            ]
+        }
+    );
+
+
+    priority @(
+        Common.Label: 'Priority',
+        Common.Text: priorityValue.label,
+        Common.Text.@UI.TextArrangement: #TextOnly,
+
+        Common.ValueListWithFixedValues: true,
+
+        Common.ValueList: {
+            Label: 'Priority',
+            CollectionPath: 'TaskPriorities',
+
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: priority,
+                    ValueListProperty: 'code'
+                },
+                {
+                    $Type: 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'label'
+                }
+            ]
+        }
+    );
+
+};
+
+annotate service.TaskStatuses:code with @(
+    Common.Text: label,
+    Common.Text.@UI.TextArrangement: #TextOnly
+);
+
+annotate service.TaskPriorities:code with @(
+    Common.Text: label,
+    Common.Text.@UI.TextArrangement: #TextOnly
+);
+
+
+
+
+annotate service.Tasks with {
+    intern @(
+        Common.FieldControl: {
+            $edmJson: {
+                $If: [
+                    {
+                        $Eq: [
+                            {
+                                $Path: 'HasActiveEntity'
+                            },
+                            true
+                        ]
+                    },
+                    1,
+                    3
+                ]
+            }
+        }
+    );
+};
+
+
+annotate InternshipService.MentorInternPerformance with @(
+    UI.LineItem: [
         {
-            $Type: 'UI.DataFieldForAction',
-            Action: 'InternshipService.completeTask',
-            Label: 'Complete Task'
+            $Type: 'UI.DataField',
+            Value: internName,
+            Label: 'Intern'
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: department,
+            Label: 'Department'
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: totalTasks,
+            Label: 'Total Tasks'
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: inProgressTasks,
+            Label: 'In Progress',
+            Criticality: #Information
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: awaitingReviewTasks,
+            Label: 'Awaiting Review',
+            Criticality: #Critical
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: blockedTasks,
+            Label: 'Blocked',
+            Criticality: #Negative
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: overdueTasks,
+            Label: 'Overdue',
+            Criticality: #Negative
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: completedTasks,
+            Label: 'Completed',
+            Criticality: #Positive
+        },
+        {
+            $Type: 'UI.DataField',
+            Value: completionRate,
+            Label: 'Completion Rate',
+            Criticality: #Positive
         }
     ]
 );
