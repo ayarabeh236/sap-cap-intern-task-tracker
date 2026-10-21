@@ -354,41 +354,53 @@ The production environment uses:
 
 ### SAP Build Work Zone
 
-The applications are exposed through SAP Build Work Zone, with dedicated access for Intern, Mentor, and Manager roles.
+The three role-specific applications are exposed through SAP Build Work Zone.
 
 ![SAP Build Work Zone](docs/images/work-zone-home.png)
 
-### Manager Dashboard
+---
 
-The Manager application provides a global view of tasks, statuses, overdue work, completion rate, and intern performance.
+### Manager Experience
+
+The Manager application provides a global overview of tasks and KPIs across all interns.
 
 ![Manager Dashboard](docs/images/manager-dashboard.png)
 
-### Intern Performance
-
-Managers can analyze KPIs for an individual intern.
+Managers can also analyze the performance of a specific intern.
 
 ![Intern Performance](docs/images/manager-intern-performance.png)
 
-### Intern Application
+At task level, managers have supervisory actions such as cancelling a task.
 
-Interns see only their assigned tasks and can follow their status throughout the task lifecycle.
+![Manager Task Detail](docs/images/manager-task-detail.png)
+
+---
+
+### Intern Experience
+
+Interns can access only their assigned tasks and track their current status.
 
 ![Intern Tasks](docs/images/intern-my-tasks.png)
 
-### Mentor Dashboard
+At task level, interns can update progress, block or resume work, and submit tasks for mentor review.
 
-Mentors monitor the interns assigned to them, review tasks, and track workload and completion KPIs.
+![Intern Task Detail](docs/images/intern-task-detail.png)
+
+---
+
+### Mentor Experience
+
+Mentors monitor the interns assigned to them and track task and performance KPIs.
 
 ![Mentor Dashboard](docs/images/mentor-dashboard.png)
 
-### AI-Powered Weekly Summary
+When a task is submitted for review, mentors can inspect its progress history and feedback, then complete the task or request changes.
 
-Mentors can generate a weekly progress summary using Google Gemini based on the selected intern's tasks and progress information.
+![Mentor Task Review](docs/images/mentor-task-review.png)
 
-![AI Weekly Progress Summary](docs/images/ai-weekly-summary.png)
+Mentors can also generate an AI-powered weekly progress summary for a selected intern using Google Gemini.
 
----
+## ![AI Weekly Progress Summary](docs/images/ai-weekly-summary.png)
 
 ## Project Context
 
